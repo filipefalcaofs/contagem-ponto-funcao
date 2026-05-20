@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Termo de Entrega e Aceite — {{ termo.sistema }}</title>
+  <style>{{ estilos }}</style>
+</head>
+<body>
+
+  <p class="centralizado negrito" style="font-size: 12pt; margin-top: 24pt;">{{ termo.sistema }}</p>
+  <p class="centralizado negrito" style="font-size: 14pt;">Termo de Entrega e Aceite</p>
+
+  <p class="centralizado negrito" style="margin: 20pt 0 8pt;">
+    Entrega – {{ termo.sistema_curto | default(termo.sistema) }}<br>
+    TAMANHO FUNCIONAL: {{ total_pf_fmt }} P.F. (PONTOS DE FUNÇÃO)
+  </p>
+
+  <p class="centralizado">{{ termo.data }}</p>
+
+  <div class="cliente-bloco">
+    <p class="rotulo">Cliente:</p>
+    <p>{{ termo.cliente }}</p>
+    <p>{{ termo.cliente_linha2 }}</p>
+  </div>
+
+  <p class="centralizado negrito" style="font-size: 13pt; margin: 24pt 0;">Termo de Entrega e Aceite</p>
+
+  <div class="meta-contrato">
+    <div><strong>Processo licitatório:</strong> {{ termo.processo_licitatorio }}</div>
+    <div><strong>Contrato:</strong> {{ termo.contrato }}</div>
+    <div><strong>Processo Administrativo:</strong> {{ termo.processo_administrativo }}</div>
+  </div>
+
+  <h2 style="font-size: 12pt; color: #000; font-family: Arial, sans-serif;">Introdução</h2>
+
+  <p>Este documento intitulado <strong>TERMO DE ENTREGA E ACEITE</strong> visa formalizar a entrega e o aceite do {{ termo.nome_projeto | default(termo.sistema) }}, contemplando as funcionalidades disponibilizadas para {{ termo.cliente_resumo | default(termo.cliente) }}, conforme escopo funcional validado na contagem oficial de Pontos de Função.</p>
+
+  <p>A entrega constitui a disponibilização do projeto {{ termo.nome_curto | default('SIGVISA') }} para validação e aceite do cliente, dimensionado funcionalmente em <strong>{{ total_pf_fmt }} unidades de Pontos de Função</strong>, conforme detalhamento apresentado na planilha de contagem oficial anexa: <strong>{{ termo.planilha_anexa }}</strong>.</p>
+
+  <p>Todos os produtos e artefatos foram produzidos conforme as normas estabelecidas no contrato firmado entre a empresa {{ identificacao.empresa | default('Sudoeste Informática e Consultoria') }} e a Prefeitura Municipal do Salvador – PMS.</p>
+
+  <h2 style="font-size: 12pt; color: #000; font-family: Arial, sans-serif; margin-top: 18pt;">Pacotes de Trabalho Entregues (produtos e artefatos)</h2>
+
+  <table class="pacotes avoid-break">
+    <thead>
+      <tr>
+        <th class="col-id">Id. Func</th>
+        <th>Função Transacional (EE, CE, SE) ou Função de Dados (ALI, AIE)</th>
+        <th class="col-pf">PF Local</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for grupo in grupos %}
+      <tr class="linha-grupo">
+        <td class="col-id">{{ grupo.id or ('F' ~ loop.index) }}</td>
+        <td>{{ grupo.nome }}</td>
+        <td class="col-pf"></td>
+      </tr>
+      {% for item in grupo.itens %}
+      <tr>
+        <td class="col-id"></td>
+        <td>{{ item.nome_exibicao }}</td>
+        <td class="col-pf">{{ item.pf_fmt }}</td>
+      </tr>
+      {% endfor %}
+      {% endfor %}
+      <tr class="linha-total">
+        <td></td>
+        <td>TOTAL DE PONTOS DE FUNÇÃO</td>
+        <td class="col-pf">{{ total_pf_fmt }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 style="font-size: 12pt; color: #000; font-family: Arial, sans-serif;">Observações</h2>
+  <p>{{ termo.observacoes | default('A contagem dos Pontos de Função (PF) segue o Manual de Práticas de Contagem do IFPUG versão 4.3.1, considerando processos elementares e funções de dados reconhecíveis pelo usuário. A memória de contagem encontra-se detalhada em planilha anexa para conferência do fiscal do contrato.') }}</p>
+
+  <div class="meta-contrato">
+    <div><strong>Processo licitatório:</strong> {{ termo.processo_licitatorio }}</div>
+    <div><strong>Contrato:</strong> {{ termo.contrato }}</div>
+    <div><strong>Processo Administrativo:</strong> {{ termo.processo_administrativo }}</div>
+  </div>
+
+  <div class="assinaturas">
+    <h2 style="font-size: 12pt; color: #000; font-family: Arial, sans-serif;">Aprovação</h2>
+    <p class="rotulo">ELABORADO POR:</p>
+    <div class="linha-assinatura">{{ termo.elaborado_por }}</div>
+    <p>{{ termo.elaborado_cargo }}</p>
+
+    <p class="rotulo">HOMOLOGADO POR:</p>
+    <div class="linha-assinatura">{{ termo.homologado_por | default('') }}</div>
+    <p>{{ termo.homologado_cargo | default('') }}</p>
+
+    <p class="centralizado" style="margin-top: 32pt;">{{ termo.data }}</p>
+  </div>
+
+</body>
+</html>

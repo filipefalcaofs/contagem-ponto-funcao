@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Proposta Comercial — {{ proposta.sistema }}</title>
+  <style>{{ estilos }}</style>
+</head>
+<body>
+
+  <div class="capa">
+    <p class="capa-subtitulo-grande">PROPOSTA COMERCIAL</p>
+    <p class="subtitulo" style="font-size: 13pt; color: #666;">{{ proposta.sistema }}</p>
+    <p class="subtitulo">{{ proposta.subtitulo }}</p>
+    <p class="data-centro">{{ proposta.data }}</p>
+  </div>
+
+  <div style="page-break-before: always;"></div>
+
+  <h2>1. Objeto</h2>
+  <p>{{ proposta.objeto }}</p>
+
+  <h2>2. Escopo — Ações Macro</h2>
+  {% for bloco in escopo_macro %}
+  <h3>{{ bloco.titulo }}</h3>
+  {% if bloco.referencia %}
+  <p class="referencia">Referência: {{ bloco.referencia }}</p>
+  {% endif %}
+  <ul class="escopo">
+    {% for item in bloco.itens %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+
+  <h2>3. Metodologia de Contagem</h2>
+  <p>{{ metodologia_contagem }}</p>
+  {% if resumo_pf %}
+  {% if resumo_pf.vaf %}
+  {% if resumo_pf.vaf_formula %}
+  <p class="formula-pf">{{ resumo_pf.vaf_formula }}</p>
+  {% endif %}
+  <p class="formula-pf">PF Ajustados = {{ resumo_pf.total_nao_ajustado }} × {{ resumo_pf.vaf }} = {{ resumo_pf.total_ajustado }} PF</p>
+  {% endif %}
+  <table class="resumo-pf">
+    <thead>
+      <tr>
+        <th>EE</th><th>SE</th><th>CE</th><th>ALI</th><th>AIE</th><th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ resumo_pf.ee | default(0) }}</td>
+        <td>{{ resumo_pf.se | default(0) }}</td>
+        <td>{{ resumo_pf.ce | default(0) }}</td>
+        <td>{{ resumo_pf.ali | default(0) }}</td>
+        <td>{{ resumo_pf.aie | default(0) }}</td>
+        <td class="destaque">{{ resumo_pf.total_nao_ajustado | default(0) }}</td>
+      </tr>
+    </tbody>
+  </table>
+  {% endif %}
+
+  <h2>4. Prazo de Entrega</h2>
+  <p>{{ proposta.prazo }}</p>
+
+  <h2>5. Estimativa em Pontos de Função</h2>
+  <table class="indicadores resumo-pf">
+    <thead>
+      <tr>
+        <th>Indicador</th>
+        <th>Quantidade (PF)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total não ajustado (soma EE + SE + CE + ALI + AIE)</td>
+        <td class="destaque">{{ resumo_pf.total_nao_ajustado | default(0) }}</td>
+      </tr>
+      <tr>
+        <td>Total ajustado (após VAF)</td>
+        <td class="destaque">{{ resumo_pf.total_ajustado | default(resumo_pf.total_nao_ajustado) }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  {% for secao in secoes_adicionais %}
+  <h2>{{ secao.titulo }}</h2>
+  {% if secao.texto %}<p>{{ secao.texto }}</p>{% endif %}
+  {% if secao.itens %}
+  <ul class="condicoes">
+    {% for item in secao.itens %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endfor %}
+
+  <h2>9. Condições Gerais</h2>
+  <ul class="condicoes">
+    {% for item in proposta.condicoes_gerais %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "nome_projeto": "Meu Sistema — Descrição completa",
+  "empresa": "Sudoeste Informática",
+  "pasta_hus": "docs/requisitos/hus",
+  "padrao_arquivo": "HU.{num:02d} - {titulo}",
+  "cor_primaria": "#005ca9",
+  "gerar_docx": true,
+  "gerar_pdf": false,
+  "gerar_consolidado": true,
+  "texto_aprovacao": [
+    "A {empresa} esclarece que o desenvolvimento das funcionalidades descritas neste documento foi realizado de acordo com os requisitos e especificações fornecidos pelo cliente.",
+    "Para evitar possíveis retrabalhos ou ajustes futuros, sugerimos que o cliente revise atentamente os requisitos apresentados.",
+    "Reafirmamos nosso compromisso de entregar um software de qualidade que agregue valor às operações do cliente."
+  ]
+}

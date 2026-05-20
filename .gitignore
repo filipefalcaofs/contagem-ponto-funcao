@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.DS_Store
+.hu-temp-consolidado/
+dist/
+build/
+.pytest_cache/
+saida/
+*.tmp.html

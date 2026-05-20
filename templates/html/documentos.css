@@ -1,0 +1,192 @@
+/* Estilos compartilhados — alinhados aos PDFs SIGVISA/SALUS (azul PMS #005ca9) */
+
+@page {
+  size: letter;
+  margin: 22mm 18mm 20mm 18mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10pt;
+  line-height: 1.45;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, .titulo-secao {
+  font-family: Cambria, "Times New Roman", Georgia, serif;
+  color: #005ca9;
+  font-weight: 700;
+  margin: 18pt 0 8pt;
+  page-break-after: avoid;
+}
+
+h1 { font-size: 22pt; text-align: center; margin-top: 48pt; }
+h2 { font-size: 14pt; }
+h3 { font-size: 11pt; }
+
+.subtitulo {
+  text-align: center;
+  color: #666;
+  font-size: 11pt;
+  margin: 4pt 0;
+}
+
+.data-centro {
+  text-align: center;
+  color: #666;
+  font-size: 11pt;
+  margin: 16pt 0 24pt;
+}
+
+.capa-subtitulo-grande {
+  text-align: center;
+  font-family: Cambria, Georgia, serif;
+  font-size: 28pt;
+  font-weight: 700;
+  color: #005ca9;
+  margin: 8pt 0;
+}
+
+.referencia {
+  color: #666;
+  font-size: 8pt;
+  margin: 0 0 6pt;
+  font-style: italic;
+}
+
+p {
+  margin: 0 0 8pt;
+  text-align: justify;
+}
+
+ul.escopo {
+  margin: 0 0 10pt 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+ul.escopo li {
+  margin: 0 0 3pt;
+  padding-left: 14pt;
+  text-indent: -14pt;
+  font-size: 8pt;
+}
+
+ul.escopo li::before {
+  content: "●";
+  padding-right: 6pt;
+  color: #000;
+}
+
+ul.condicoes {
+  margin: 0;
+  padding-left: 16pt;
+}
+
+ul.condicoes li {
+  margin-bottom: 6pt;
+  font-size: 10pt;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10pt 0 14pt;
+  font-size: 9pt;
+}
+
+table.pacotes th,
+table.pacotes td {
+  border: 1px solid #999;
+  padding: 0.5pt 3pt;
+  vertical-align: top;
+  line-height: 1.05;
+  font-size: 6.5pt;
+}
+
+table.pacotes th {
+  background: #f0f0f0;
+  font-weight: 700;
+  text-align: center;
+}
+
+table.pacotes td.col-id { width: 10%; text-align: center; font-weight: 700; }
+table.pacotes td.col-pf { width: 12%; text-align: right; white-space: nowrap; }
+table.pacotes tr.linha-grupo td { font-weight: 700; background: #fafafa; }
+table.pacotes tr.linha-total td { font-weight: 700; }
+
+table.resumo-pf th {
+  background: #005ca9;
+  color: #fff;
+  font-weight: 700;
+  padding: 5pt 8pt;
+  border: 1px solid #005ca9;
+  text-align: center;
+}
+
+table.resumo-pf td {
+  border: 1px solid #ccc;
+  padding: 5pt 8pt;
+  text-align: center;
+}
+
+table.resumo-pf td.destaque {
+  font-family: Cambria, Georgia, serif;
+  font-size: 11pt;
+  font-weight: 700;
+  color: #005ca9;
+}
+
+table.indicadores td:first-child { width: 70%; }
+table.indicadores td:last-child {
+  font-family: Cambria, Georgia, serif;
+  font-size: 11pt;
+  font-weight: 700;
+  color: #005ca9;
+  text-align: right;
+}
+
+.meta-contrato {
+  margin: 12pt 0 18pt;
+  font-size: 10pt;
+}
+
+.meta-contrato div { margin-bottom: 4pt; }
+.meta-contrato strong { display: inline-block; min-width: 160px; }
+
+.cliente-bloco { margin: 12pt 0 20pt; }
+.cliente-bloco .rotulo { font-weight: 700; font-size: 11pt; }
+
+.centralizado { text-align: center; }
+.negrito { font-weight: 700; }
+
+.assinaturas {
+  margin-top: 28pt;
+  page-break-inside: avoid;
+}
+
+.assinaturas .rotulo {
+  font-weight: 700;
+  margin: 16pt 0 32pt;
+}
+
+.linha-assinatura {
+  border-top: 1px solid #000;
+  width: 280px;
+  margin: 36pt 0 4pt;
+  padding-top: 4pt;
+  font-size: 9pt;
+}
+
+.formula-pf {
+  font-weight: 700;
+  margin: 8pt 0;
+}
+
+.avoid-break { page-break-inside: avoid; }

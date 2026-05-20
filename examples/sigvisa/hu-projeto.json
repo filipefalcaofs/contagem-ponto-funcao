@@ -1,0 +1,9 @@
+{
+  "nome_projeto": "SIGVISA - Sistema de Gestão da Vigilância Sanitária",
+  "empresa": "Sudoeste Informática",
+  "pasta_hus": "docs/requisitos/hus",
+  "cor_primaria": "#005ca9",
+  "gerar_docx": true,
+  "gerar_pdf": false,
+  "gerar_consolidado": true
+}

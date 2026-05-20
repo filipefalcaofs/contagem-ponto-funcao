@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ hu.codigo }} – {{ hu.titulo }}</title>
+  <link rel="stylesheet" href="documentos.css" />
+  <style>
+    :root { --cor-primaria: {{ cor_primaria }}; }
+    h1, h2, h3, .titulo-secao { color: var(--cor-primaria); }
+    .hu-cabecalho { text-align: center; margin-bottom: 24pt; }
+    .hu-cabecalho h1 { font-size: 16pt; margin-top: 12pt; }
+    .hu-projeto { text-align: center; font-weight: bold; margin-bottom: 16pt; }
+    table.hu-tabela { width: 100%; border-collapse: collapse; margin: 12pt 0; font-size: 9pt; }
+    table.hu-tabela th, table.hu-tabela td { border: 1px solid #999; padding: 4pt 6pt; }
+    table.hu-tabela th { background: #f0f7ff; color: var(--cor-primaria); }
+    .sumario ul { margin: 6pt 0; padding-left: 18pt; }
+    .cenario { margin: 8pt 0 12pt; }
+    .cenario-titulo { font-weight: bold; margin-bottom: 4pt; }
+    .placeholder { color: #888; font-style: italic; margin: 8pt 0; }
+  </style>
+</head>
+<body>
+
+<div class="hu-cabecalho">
+  <h1>{{ hu.codigo }} – {{ hu.titulo.upper() }}</h1>
+  <p class="hu-projeto">PROJETO: {{ hu.projeto or config.nome_projeto }}</p>
+</div>
+
+<h2 class="titulo-secao">Histórico de Revisão</h2>
+<table class="hu-tabela">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Resumo das Alterações</th>
+      <th>Versão</th>
+      <th>Responsável</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for h in hu.historico %}
+    <tr>
+      <td>{{ h.data }}</td>
+      <td>{{ h.resumo }}</td>
+      <td>{{ h.versao }}</td>
+      <td>{{ h.responsavel }}</td>
+    </tr>
+    {% else %}
+    <tr>
+      <td></td>
+      <td>Criação do documento</td>
+      <td>1.0</td>
+      <td>{{ config.empresa }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2 class="titulo-secao">Visão Geral</h2>
+<p>{{ hu.visao_geral }}</p>
+
+{% if hu.sumario %}
+<h2 class="titulo-secao">Sumário</h2>
+<div class="sumario">
+  <ul>
+    {% for item in hu.sumario %}
+    <li>{{ item }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<h2 class="titulo-secao">{{ hu.epico_titulo or 'Épico' }}</h2>
+<p>{{ hu.epico_texto }}</p>
+
+<h2 class="titulo-secao">{{ hu.historia_titulo or ('História de Usuário: ' ~ hu.titulo) }}</h2>
+<p>{{ hu.historia_texto }}</p>
+
+<h2 class="titulo-secao">Pré-requisitos</h2>
+{% if hu.pre_requisitos %}
+<ul>
+  {% for item in hu.pre_requisitos %}<li>{{ item }}</li>{% endfor %}
+</ul>
+{% else %}<p>Nenhum</p>{% endif %}
+
+<h2 class="titulo-secao">Dependências</h2>
+<p><strong>Passadas</strong></p>
+{% if hu.dependencias_passadas %}
+<ul>{% for item in hu.dependencias_passadas %}<li>{{ item }}</li>{% endfor %}</ul>
+{% else %}<p>Nenhuma</p>{% endif %}
+<p><strong>Futuras</strong></p>
+{% if hu.dependencias_futuras %}
+<ul>{% for item in hu.dependencias_futuras %}<li>{{ item }}</li>{% endfor %}</ul>
+{% else %}<p>Nenhuma</p>{% endif %}
+
+<h2 class="titulo-secao">Interface de Usuário</h2>
+{% for tela in hu.telas %}
+<h3>Tela {{ tela.numero }} — {{ tela.titulo }}</h3>
+<p><strong>Caminho no menu:</strong> {{ tela.caminho_menu or '—' }}</p>
+{% if tela.screenshot %}
+<p class="placeholder">[Protótipo: {{ tela.screenshot }}]</p>
+{% else %}
+<p class="placeholder">[Espaço para protótipo/screenshot]</p>
+{% endif %}
+<h4>Comportamento Esperado Tela {{ tela.numero }}</h4>
+{% for cen in tela.cenarios %}
+<div class="cenario">
+  <p class="cenario-titulo">Cenário: {{ cen.titulo }}</p>
+  <p><strong>Dado que</strong> {{ cen.dado }}</p>
+  <p><strong>Quando</strong> {{ cen.quando }}</p>
+  <p><strong>Então</strong> {{ cen.entao }}</p>
+</div>
+{% endfor %}
+{% endfor %}
+
+<h2 class="titulo-secao">Aprovação do Requisito</h2>
+{% for par in textos_aprovacao %}
+<p>{{ par }}</p>
+{% endfor %}
+
+<table class="hu-tabela">
+  <thead>
+    <tr><th>Data</th><th>Setor</th><th>Nome</th><th>Assinatura</th></tr>
+  </thead>
+  <tbody>
+    {% for assin in hu.assinaturas %}
+    <tr>
+      <td>{{ assin.data }}</td>
+      <td>{{ assin.setor }}</td>
+      <td>{{ assin.nome }}</td>
+      <td>{{ assin.assinatura }}</td>
+    </tr>
+    {% else %}
+    {% for _ in range(3) %}
+    <tr><td></td><td></td><td></td><td></td></tr>
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+
+</body>
+</html>
