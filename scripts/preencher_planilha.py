@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -19,10 +20,79 @@ COL_AR = 11      # K
 COL_OBS = 17     # Q
 LINHA_INICIO = 12
 
+TIPOS_TRANSACIONAIS = {"EE", "CE", "SE"}
+TIPOS_CONTAVEIS = {"EE", "CE", "SE", "ALI", "AIE"}
+TERMOS_SUSPEITOS = (
+    "gerar pdf",
+    "assinar",
+    "enfileirar",
+    "processar",
+    "reprocessar",
+    "registrar log",
+    "registrar consulta",
+    "notificar",
+    "enviar e-mail",
+    "aplicar template",
+    "pré-validar",
+    "preencher formulário",
+    "calcular hash",
+    "vincular retificação",
+)
+JUSTIFICATIVAS_PE = (
+    "processo elementar independente",
+    "saída funcional autônoma",
+    "acao independente",
+    "ação independente",
+    "usuário aciona explicitamente",
+    "usuario aciona explicitamente",
+)
+
 
 def carregar_json(caminho: Path) -> dict[str, Any]:
     with caminho.open(encoding="utf-8") as f:
         return json.load(f)
+
+
+def validar_processos_elementares(dados: dict[str, Any]) -> None:
+    erros: list[str] = []
+
+    for grupo in dados.get("grupos", []):
+        for item in grupo.get("itens", []):
+            tipo = item.get("tipo")
+            nome = str(item.get("nome", ""))
+            observacoes = str(item.get("observacoes", ""))
+            texto = f"{nome} {observacoes}".lower()
+
+            if tipo not in TIPOS_CONTAVEIS:
+                erros.append(f"{grupo.get('nome')} / {nome}: tipo funcional inválido ({tipo!r}).")
+                continue
+
+            if tipo in TIPOS_TRANSACIONAIS:
+                if not observacoes.strip():
+                    erros.append(f"{grupo.get('nome')} / {nome}: transação sem observações auditáveis.")
+
+                if any(termo in texto for termo in TERMOS_SUSPEITOS) and not any(j in texto for j in JUSTIFICATIVAS_PE):
+                    erros.append(
+                        f"{grupo.get('nome')} / {nome}: item suspeito de não ser processo elementar independente. "
+                        "Incorpore ao processo principal ou justifique explicitamente em observações."
+                    )
+
+    if erros:
+        print("Validação de processo elementar falhou:", file=sys.stderr)
+        for erro in erros:
+            print(f"- {erro}", file=sys.stderr)
+        raise SystemExit(2)
+
+
+def iaet_padrao(dados: dict[str, Any], item: dict[str, Any]) -> str | None:
+    if item.get("iaet"):
+        return item["iaet"]
+
+    tipo_contagem = dados.get("identificacao", {}).get("tipo_contagem", "desenvolvimento").lower()
+    if tipo_contagem == "desenvolvimento" and item.get("tipo") in TIPOS_CONTAVEIS:
+        return "I"
+
+    return None
 
 
 def limpar_dados_funcoes(ws, linha_inicio: int = LINHA_INICIO) -> None:
@@ -62,16 +132,15 @@ def preencher_identificacao(ws, meta: dict[str, Any]) -> None:
         ws.cell(linhas_tipo[tipo], 12).value = "x"
 
 
-def escrever_grupos(ws, grupos: list[dict[str, Any]], linha_inicio: int = LINHA_INICIO) -> int:
+def escrever_grupos(ws, dados: dict[str, Any], linha_inicio: int = LINHA_INICIO) -> int:
     linha = linha_inicio
-    for grupo in grupos:
+    for grupo in dados.get("grupos", []):
         ws.cell(linha, COL_FUNCAO).value = grupo["nome"]
         linha += 1
         for item in grupo.get("itens", []):
             ws.cell(linha, COL_FUNCAO).value = item["nome"]
             ws.cell(linha, COL_TIPO).value = item["tipo"]
-            if item.get("iaet"):
-                ws.cell(linha, COL_IAET).value = item["iaet"]
+            ws.cell(linha, COL_IAET).value = iaet_padrao(dados, item)
             if item.get("td") is not None:
                 ws.cell(linha, COL_TD).value = item["td"]
             if item.get("ar") is not None:
@@ -99,6 +168,7 @@ def main() -> None:
     args = parser.parse_args()
 
     dados = carregar_json(args.json)
+    validar_processos_elementares(dados)
     args.saida.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(args.template, args.saida)
 
@@ -108,7 +178,11 @@ def main() -> None:
 
     preencher_identificacao(ws_contagem, dados.get("identificacao", {}))
     limpar_dados_funcoes(ws_funcoes)
-    escrever_grupos(ws_funcoes, dados.get("grupos", []))
+    escrever_grupos(ws_funcoes, dados)
+
+    wb.calculation.fullCalcOnLoad = True
+    wb.calculation.forceFullCalc = True
+    wb.calculation.calcMode = "auto"
 
     wb.save(args.saida)
     print(f"Planilha gerada: {args.saida}")

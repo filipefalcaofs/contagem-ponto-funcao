@@ -72,6 +72,45 @@ Conte uma transação apenas se atender **todos** os critérios:
 
 Consultar Parte 2 Cap. 7 para unicidade e classificação EE vs CE vs SE. Em dúvida entre CE e SE, ler regras e exemplos da Parte 4.
 
+### Gate obrigatório — antes de incluir qualquer EE/CE/SE
+
+Antes de colocar um item transacional no JSON/planilha, responda explicitamente no raciocínio de contagem:
+
+| Pergunta | Se a resposta for "não" |
+|---|---|
+| O usuário reconhece esta ação/consulta/saída como uma função de negócio? | Não conte como transação separada. |
+| É a menor unidade completa para aquele objetivo do usuário? | Agrupe com o processo elementar maior. |
+| É autocontida, sem depender de outro passo para fazer sentido funcional? | Agrupe com a transação principal. |
+| Deixa o negócio em estado consistente ou entrega resposta funcional completa? | Não conte separadamente. |
+| A intenção primária é manter ALI, alterar comportamento ou apresentar informação? | Reclassifique ou remova. |
+
+#### Itens suspeitos que exigem justificativa explícita
+
+Sinalize e, por padrão, **não conte separadamente** se o nome da função indicar:
+
+- `gerar PDF`, `assinar`, `enfileirar`, `processar`, `reprocessar`, `registrar log`, `registrar consulta`, `notificar`, `enviar e-mail`, `aplicar template`, `pré-validar`, `preencher formulário`, `calcular hash`.
+- Ação automática disparada como consequência de outra EE.
+- Passo técnico sem interação/saída funcional autônoma para o usuário.
+- Apoio de interface que só prepara dados antes de salvar.
+
+Conte esses casos separadamente apenas quando houver evidência funcional de que o usuário os aciona/consulta como objetivo independente. A justificativa deve constar em `observacoes` com texto como:
+
+```text
+Processo elementar independente: usuário aciona explicitamente e recebe saída completa reconhecida pelo negócio.
+```
+
+#### Exemplos práticos de saneamento
+
+| Item candidato | Decisão recomendada |
+|---|---|
+| `Fechar edição diária` | Contar como EE principal. |
+| `Gerar PDF consolidado` | Incorporar ao fechamento, salvo se houver ação independente de gerar/regenerar PDF reconhecida pelo usuário. |
+| `Assinar digitalmente edição` | Incorporar ao fechamento, salvo se o usuário aciona assinatura separadamente. |
+| `Registrar consulta pública` | Não contar; é efeito colateral/log da busca. |
+| `Consultar observabilidade da busca` | Contar como SE/CE, pois entrega relatório ao usuário. |
+| `Aplicar template em publicação` | Não contar se apenas preenche o editor antes de salvar; incorporar em incluir/alterar publicação. |
+| `Vincular retificação` | Incorporar em incluir/alterar publicação se for apenas campo do ato. |
+
 ## Tipos de função (resumo — detalhes no CPM)
 
 | Tipo | Use quando |
