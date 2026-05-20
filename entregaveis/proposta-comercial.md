@@ -2,22 +2,19 @@
 
 Template visual: [../templates/proposta-comercial-modelo.pdf](../templates/proposta-comercial-modelo.pdf)
 
-Referência: `Proposta Comercial - SALUS - v3.pdf` (9 páginas)
+Exemplo de JSON: [../templates/contagem-exemplo.json](../templates/contagem-exemplo.json)
 
 ## Seções obrigatórias
 
 | # | Seção | Conteúdo |
 |---|-------|----------|
-| Capa | Título, sistema, cliente, data | PROPOSTA COMERCIAL + nome + DVIS/PMS |
-| 1 | Objeto | Desenvolvimento e implantação do sistema (VISA + Portal) |
-| 2 | Escopo — Ações Macro | 8–10 blocos com bullets de telas/integrações (visão comercial, não PF) |
+| Capa | Título, sistema, cliente, data | PROPOSTA COMERCIAL + nome do sistema + contratante |
+| 1 | Objeto | Desenvolvimento e implantação conforme escopo acordado |
+| 2 | Escopo — Ações Macro | Blocos com bullets de telas/integrações (visão comercial, não PF) |
 | 3 | Metodologia de Contagem | CPM IFPUG 4.3.1, tipos EE/SE/CE/ALI/AIE, VAF se aplicável |
-| 4 | Prazo de Entrega | Dias corridos a partir da OS |
+| 4 | Prazo de Entrega | Prazo acordado em contrato |
 | 5 | Estimativa em PF | Tabela resumo não ajustado + ajustado |
-| 6 | Linguagem, Tecnologia e Frameworks | Stack (Laravel, Vue, PostgreSQL, testes) |
-| 7 | Inteligência Artificial e Manutenção | Provedores, exclusões de orçamento |
-| 8 | Carga Inicial do Banco de Dados | Referência + operacional legado |
-| 9 | Condições Gerais | Validade 30 dias, aditivo por PF, entrega com código-fonte |
+| 6+ | Seções adicionais | Stack, IA, carga de dados, condições gerais (via JSON) |
 
 ## Diferença escopo macro vs planilha
 
@@ -35,33 +32,25 @@ A proposta **não substitui** a planilha; referencia a metodologia e o total PF.
 {
   "proposta": {
     "titulo": "PROPOSTA COMERCIAL",
-    "sistema": "SALUS — Sistema de Licenciamento Sanitário",
-    "subtitulo": "DVIS/SMS — Prefeitura Municipal de Salvador",
-    "cliente": "",
-    "data": "09/04/2026",
-    "objeto": "Desenvolvimento e implantação do SALUS...",
-    "prazo": "40 (quarenta) dias corridos...",
-    "metodologia_contagem": "CPM IFPUG 4.3.1...",
-    "condicoes_gerais": ["..."]
+    "sistema": "Nome do Sistema — Descrição Comercial",
+    "subtitulo": "Cliente — Órgão contratante",
+    "data": "dd/mm/aaaa",
+    "objeto": "Desenvolvimento e implantação do sistema...",
+    "prazo": "Prazo acordado em contrato..."
   },
   "escopo_macro": [
     {
-      "titulo": "1. Autenticação, Controle de Acesso e Perfil",
+      "titulo": "1. Autenticação e Controle de Acesso",
       "referencia": "HU.01 a HU.04",
-      "itens": ["Tela de login do Painel VISA...", "..."]
+      "itens": ["Tela de login...", "..."]
     }
   ],
   "resumo_pf": {
-    "ee": 329, "se": 123, "ce": 195, "ali": 306, "aie": 46,
-    "total_nao_ajustado": 999,
-    "vaf": 1.07,
-    "total_ajustado": 1069
-  },
-  "secoes_adicionais": [
-    {"titulo": "6. Linguagem, Tecnologia e Frameworks", "texto": "..."},
-    {"titulo": "7. Inteligência Artificial e Manutenção", "itens": ["..."]},
-    {"titulo": "8. Carga Inicial do Banco de Dados", "itens": ["..."]}
-  ]
+    "ee": 0, "se": 0, "ce": 0, "ali": 0, "aie": 0,
+    "total_nao_ajustado": 0,
+    "vaf": 1.0,
+    "total_ajustado": 0
+  }
 }
 ```
 
@@ -71,9 +60,7 @@ A proposta **não substitui** a planilha; referencia a metodologia e o total PF.
 python scripts/gerar_proposta_comercial.py contagem.json -o proposta.pdf
 ```
 
-O PDF replica o layout SALUS v3: capa centrada, títulos Cambria `#005ca9` (28pt), referências em cinza, bullets `●`, tabelas PF com cabeçalho azul institucional, cabeçalho/rodapé paginados.
-
-Referência visual: [templates/proposta-comercial-modelo.pdf](../templates/proposta-comercial-modelo.pdf)
+Layout institucional Sudoeste: capa centrada, títulos Cambria `#005ca9`, referências em cinza, bullets, tabelas PF com cabeçalho azul, cabeçalho/rodapé paginados.
 
 ## Coerência com contagem
 

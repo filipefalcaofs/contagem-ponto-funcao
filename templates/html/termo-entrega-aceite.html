@@ -35,9 +35,9 @@
 
   <p>Este documento intitulado <strong>TERMO DE ENTREGA E ACEITE</strong> visa formalizar a entrega e o aceite do {{ termo.nome_projeto | default(termo.sistema) }}, contemplando as funcionalidades disponibilizadas para {{ termo.cliente_resumo | default(termo.cliente) }}, conforme escopo funcional validado na contagem oficial de Pontos de Função.</p>
 
-  <p>A entrega constitui a disponibilização do projeto {{ termo.nome_curto | default('SIGVISA') }} para validação e aceite do cliente, dimensionado funcionalmente em <strong>{{ total_pf_fmt }} unidades de Pontos de Função</strong>, conforme detalhamento apresentado na planilha de contagem oficial anexa: <strong>{{ termo.planilha_anexa }}</strong>.</p>
+  <p>A entrega constitui a disponibilização do projeto {{ termo.nome_curto | default(termo.sistema) }} para validação e aceite do cliente, dimensionado funcionalmente em <strong>{{ total_pf_fmt }} unidades de Pontos de Função</strong>, conforme detalhamento apresentado na planilha de contagem oficial anexa: <strong>{{ termo.planilha_anexa }}</strong>.</p>
 
-  <p>Todos os produtos e artefatos foram produzidos conforme as normas estabelecidas no contrato firmado entre a empresa {{ identificacao.empresa | default('Sudoeste Informática e Consultoria') }} e a Prefeitura Municipal do Salvador – PMS.</p>
+  <p>Todos os produtos e artefatos foram produzidos conforme as normas estabelecidas no contrato firmado entre a empresa {{ identificacao.empresa | default('Sudoeste Informática e Consultoria') }} e {{ termo.cliente_contratante | default(termo.cliente) }}.</p>
 
   <h2 style="font-size: 12pt; color: #000; font-family: Arial, sans-serif; margin-top: 18pt;">Pacotes de Trabalho Entregues (produtos e artefatos)</h2>
 

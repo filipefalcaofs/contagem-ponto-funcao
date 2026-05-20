@@ -2,7 +2,7 @@
 
 Template: [../templates/termo-entrega-aceite-modelo.docx](../templates/termo-entrega-aceite-modelo.docx)
 
-Referência: `Termo de Entrega e Aceite - SIGVISA - 1047 PF.docx`
+Exemplo de JSON: [../templates/contagem-exemplo.json](../templates/contagem-exemplo.json)
 
 ## Estrutura do documento
 
@@ -18,11 +18,11 @@ Referência: `Termo de Entrega e Aceite - SIGVISA - 1047 PF.docx`
 
 | Linha | Col 1 | Col 2 | Col 3 |
 |-------|-------|-------|-------|
-| Grupo | F1 | Retaguarda - Autenticação… | (vazio) |
+| Grupo | F1 | Módulo - Autenticação… | (vazio) |
 | Item | (vazio) | Nome da função - TIPO | 4,00 |
-| Total | (vazio) | TOTAL DE PONTOS DE FUNÇÃO | 1.047,00 |
+| Total | (vazio) | TOTAL DE PONTOS DE FUNÇÃO | 0,00 |
 
-- PF Local = coluna P da planilha (aba Funções), formatado `1.047,00`
+- PF Local = coluna P da planilha (aba Funções), formatado `1.234,56`
 - Nome do item inclui sufixo `- EE`, `- CE`, etc., quando não estiver no nome
 
 ## Campos JSON (`termo`)
@@ -30,19 +30,19 @@ Referência: `Termo de Entrega e Aceite - SIGVISA - 1047 PF.docx`
 ```json
 {
   "termo": {
-    "sistema": "SIGVISA – SISTEMA DE LICENCIAMENTO SANITÁRIO",
-    "total_pf": 1047,
-    "data": "Salvador-BA, 05 de maio de 2026",
-    "cliente": "SMS – SECRETARIA MUNICIPAL DA SAÚDE",
-    "cliente_linha2": "PMS – PREFEITURA MUNICIPAL DO SALVADOR – ESTADO DA BAHIA",
-    "processo_licitatorio": "001/2023",
-    "contrato": "255/2023",
-    "processo_administrativo": "77751/2023",
-    "planilha_anexa": "contagem-sigvisa-desenvolvimento.xlsx",
-    "elaborado_por": "CLEILSON SANTANA GOMES",
-    "elaborado_cargo": "CTO – CHIEF TECHNOLOGY OFFICER",
-    "homologado_por": "",
-    "homologado_cargo": ""
+    "sistema": "NOME DO SISTEMA – DESCRIÇÃO COMPLETA",
+    "nome_curto": "NOME DO SISTEMA",
+    "total_pf": 0,
+    "data": "Cidade-UF, dd de mês de aaaa",
+    "cliente": "NOME DO CLIENTE – LINHA 1",
+    "cliente_linha2": "NOME DO CLIENTE – LINHA 2",
+    "cliente_contratante": "NOME DO CLIENTE",
+    "processo_licitatorio": "000/0000",
+    "contrato": "000/0000",
+    "processo_administrativo": "000/0000",
+    "planilha_anexa": "contagem-desenvolvimento.xlsx",
+    "elaborado_por": "NOME DO ELABORADOR",
+    "elaborado_cargo": "Cargo do elaborador"
   }
 }
 ```
@@ -50,11 +50,10 @@ Referência: `Termo de Entrega e Aceite - SIGVISA - 1047 PF.docx`
 ## Geração
 
 ```bash
-# DOCX (template Word fiel) + PDF (layout fiel)
 python scripts/gerar_termo_aceite.py contagem.json -o termo.docx --pdf termo.pdf
 ```
 
-O PDF usa HTML/CSS institucional + Playwright (Chromium), com rodapé Sudoeste e paginação. O DOCX clona o template original preservando formatação das linhas de grupo/item.
+O PDF usa HTML/CSS institucional Sudoeste + Playwright (Chromium), com rodapé da empresa e paginação. O DOCX clona o template preservando formatação das linhas de grupo/item.
 
 ## Coerência obrigatória
 

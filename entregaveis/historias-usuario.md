@@ -63,8 +63,8 @@ python scripts/atualizar_hus.py --projeto /caminho/cliente --pdf --consolidado
 | Proposta §2 | Escopo macro referenciando HUs |
 | Termo F1–Fn | Pacotes de entrega com PF Local |
 
-## Exemplo real
+## Exemplo
 
-Configuração SIGVISA: [examples/sigvisa/hu-projeto.json](../examples/sigvisa/hu-projeto.json)
+Configuração de referência: [examples/exemplo-projeto/hu-projeto.json](../examples/exemplo-projeto/hu-projeto.json)
 
-Matriz de referência (projeto SIGVISA): [referencias/MATRIZ-COBERTURA-HUS-SIGVISA.md](../referencias/MATRIZ-COBERTURA-HUS-SIGVISA.md)
+Matriz genérica: [examples/exemplo-projeto/MATRIZ-COBERTURA-HUS.md](../examples/exemplo-projeto/MATRIZ-COBERTURA-HUS.md)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Gera Proposta Comercial com layout fiel ao modelo SALUS (PDF via Playwright)."""
+"""Gera Proposta Comercial em PDF (layout institucional via HTML/Playwright)."""
 
 from __future__ import annotations
 

@@ -2,7 +2,7 @@
 
 Template: [../templates/planilha-contagem-modelo.xlsx](../templates/planilha-contagem-modelo.xlsx)
 
-Referência preenchida: `contagem-sigvisa-desenvolvimento.xlsx` (SIGVISA, 1.047 PF).
+Exemplo de JSON: [../templates/contagem-exemplo.json](../templates/contagem-exemplo.json)
 
 ## Abas (não alterar estrutura)
 
@@ -50,7 +50,7 @@ Referência preenchida: `contagem-sigvisa-desenvolvimento.xlsx` (SIGVISA, 1.047 
 1. **Linha de grupo** — preencher apenas coluna C (nome do pacote funcional). Sem tipo, TD, AR ou PF.
 2. **Linha de item** — preencher C, H, I (se melhoria), J, K, Q. Deixar fórmulas em N, O, P intactas.
 3. **Ordem didática** — Retaguarda → Portal → Público/Transversal.
-4. **Nomenclatura** — `Módulo - verbo + objeto` (ex.: `Usuários VISA - incluir usuário interno`).
+4. **Nomenclatura** — `Módulo - verbo + objeto` (ex.: `Usuários - incluir registro`).
 5. **ALI/AIE** — prefixo `Dados -` ou `Dados externos -` quando for função de dados.
 6. **Não quebrar** mesclagens, fórmulas nem aba Sumário.
 

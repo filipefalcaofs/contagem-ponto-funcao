@@ -194,7 +194,7 @@ Se não for possível auditar, marque pendência. Não apresente como contagem d
 
 ## Entregáveis comerciais (pacote completo)
 
-A skill gera três documentos alinhados entre si. Templates SIGVISA/SALUS:
+A skill gera três documentos alinhados entre si. Templates institucionais Sudoeste:
 
 | Entregável | Template | Documentação |
 |------------|----------|--------------|
@@ -212,7 +212,7 @@ JSON de exemplo: [templates/contagem-exemplo.json](templates/contagem-exemplo.js
 3. **Validar** — abrir XLSX; conferir Sumário, fórmulas e TD/AR auditáveis.
 4. **Termo** — `python scripts/gerar_termo_aceite.py contagem.json -o termo.docx --pdf termo.pdf`
 5. **Proposta** — `python scripts/gerar_proposta_comercial.py contagem.json -o proposta.pdf`
-6. **Pacote completo** — `python scripts/gerar_pacote_completo.py contagem.json -d saida/ --prefixo sigvisa`
+6. **Pacote completo** — `python scripts/gerar_pacote_completo.py contagem.json -d saida/ --prefixo contagem`
 7. **Coerência** — total PF idêntico nos três documentos (usar PF Local da planilha no termo).
 
 ### Scripts
@@ -222,7 +222,7 @@ JSON de exemplo: [templates/contagem-exemplo.json](templates/contagem-exemplo.js
 | [scripts/preencher_planilha.py](scripts/preencher_planilha.py) | JSON → XLSX a partir do template |
 | [scripts/extrair_planilha_para_json.py](scripts/extrair_planilha_para_json.py) | XLSX → JSON (recalcular PF se fórmulas sem cache) |
 | [scripts/gerar_termo_aceite.py](scripts/gerar_termo_aceite.py) | JSON → Termo DOCX (template fiel) + PDF (HTML/Playwright) |
-| [scripts/gerar_proposta_comercial.py](scripts/gerar_proposta_comercial.py) | JSON → Proposta PDF (layout SALUS via HTML/Playwright) |
+| [scripts/gerar_proposta_comercial.py](scripts/gerar_proposta_comercial.py) | JSON → Proposta PDF (layout institucional via HTML/Playwright) |
 | [scripts/gerar_pdf.py](scripts/gerar_pdf.py) | HTML → PDF com cabeçalho/rodapé paginado |
 | [scripts/render_documento.py](scripts/render_documento.py) | JSON → HTML (Jinja2 + CSS institucional) |
 | [scripts/gerar_pacote_completo.py](scripts/gerar_pacote_completo.py) | Gera planilha + termo + proposta de uma vez |
@@ -246,6 +246,10 @@ Dependências: ver [requirements.txt](requirements.txt). Após instalar, executa
 4. **Gerar** — `python scripts/atualizar_hus.py --projeto /caminho/cliente --pdf --consolidado`
 
 Guia: [entregaveis/historias-usuario.md](entregaveis/historias-usuario.md) | Template MD: [templates/hu-modelo.md](templates/hu-modelo.md) | Template DOCX: [templates/hu-modelo.docx](templates/hu-modelo.docx)
+
+## Exemplo de configuração
+
+Arquivo de exemplo: [examples/exemplo-projeto/hu-projeto.json](examples/exemplo-projeto/hu-projeto.json)
 
 Ao contar PF ou redigir proposta, referenciar HUs no §2 (`Referência: HU.NN`).
 

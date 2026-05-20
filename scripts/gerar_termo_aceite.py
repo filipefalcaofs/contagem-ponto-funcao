@@ -16,6 +16,23 @@ from ifpug_calc import calcular_pf
 from render_documento import renderizar_arquivo
 from gerar_pdf import html_para_pdf, rodape_termo
 
+PLACEHOLDERS_TEMPLATE = {
+    "sistema": "NOME DO SISTEMA – DESCRIÇÃO COMPLETA",
+    "nome_curto": "NOME DO SISTEMA",
+    "total_pf": "0,00",
+    "data_curta": "dd de mês de aaaa",
+    "data": "Cidade-UF, dd de mês de aaaa",
+    "cliente": "NOME DO CLIENTE – LINHA 1",
+    "cliente_linha2": "NOME DO CLIENTE – LINHA 2",
+    "cliente_resumo": "NOME DO CLIENTE",
+    "processo_licitatorio": "000/0000",
+    "contrato": "000/0000",
+    "processo_administrativo": "000/0000",
+    "planilha_anexa": "contagem-desenvolvimento.xlsx",
+    "elaborado_por": "",
+    "elaborado_cargo": "",
+}
+
 
 def formatar_pf(valor: float | int) -> str:
     return f"{float(valor):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
@@ -35,24 +52,61 @@ def calcular_total(dados: dict[str, Any]) -> float:
     return total
 
 
+def montar_substituicoes(dados: dict[str, Any], total_fmt: str) -> dict[str, str]:
+    termo = dados.get("termo", {})
+    subs: dict[str, str] = {
+        PLACEHOLDERS_TEMPLATE["total_pf"]: total_fmt,
+        PLACEHOLDERS_TEMPLATE["planilha_anexa"]: termo.get(
+            "planilha_anexa", PLACEHOLDERS_TEMPLATE["planilha_anexa"]
+        ),
+        PLACEHOLDERS_TEMPLATE["processo_licitatorio"]: termo.get(
+            "processo_licitatorio", PLACEHOLDERS_TEMPLATE["processo_licitatorio"]
+        ),
+        PLACEHOLDERS_TEMPLATE["contrato"]: termo.get("contrato", PLACEHOLDERS_TEMPLATE["contrato"]),
+        PLACEHOLDERS_TEMPLATE["processo_administrativo"]: termo.get(
+            "processo_administrativo", PLACEHOLDERS_TEMPLATE["processo_administrativo"]
+        ),
+        PLACEHOLDERS_TEMPLATE["sistema"]: termo.get("sistema", PLACEHOLDERS_TEMPLATE["sistema"]),
+        PLACEHOLDERS_TEMPLATE["cliente"]: termo.get("cliente", PLACEHOLDERS_TEMPLATE["cliente"]),
+        PLACEHOLDERS_TEMPLATE["cliente_linha2"]: termo.get(
+            "cliente_linha2", PLACEHOLDERS_TEMPLATE["cliente_linha2"]
+        ),
+        PLACEHOLDERS_TEMPLATE["cliente_resumo"]: termo.get(
+            "cliente_resumo", termo.get("cliente", PLACEHOLDERS_TEMPLATE["cliente_resumo"])
+        ),
+    }
+
+    data = termo.get("data", PLACEHOLDERS_TEMPLATE["data"])
+    subs[PLACEHOLDERS_TEMPLATE["data"]] = data
+    subs[PLACEHOLDERS_TEMPLATE["data_curta"]] = data.split(", ", 1)[-1] if ", " in data else data
+
+    nome_curto = termo.get("nome_curto", termo.get("sistema", PLACEHOLDERS_TEMPLATE["nome_curto"]))
+    subs[PLACEHOLDERS_TEMPLATE["nome_curto"]] = nome_curto
+    subs[f"Entrega – {PLACEHOLDERS_TEMPLATE['sistema']}"] = f"Entrega – {termo.get('sistema', PLACEHOLDERS_TEMPLATE['sistema'])}"
+    subs[f"projeto {PLACEHOLDERS_TEMPLATE['nome_curto']} para validação"] = (
+        f"projeto {nome_curto} para validação"
+    )
+    subs[f"aceite do {PLACEHOLDERS_TEMPLATE['nome_curto']} – Descrição resumida"] = (
+        f"aceite do {nome_curto} – Descrição resumida"
+    )
+
+    subs["NOME DO CLIENTE"] = termo.get(
+        "cliente_contratante",
+        termo.get("cliente_resumo", termo.get("cliente", PLACEHOLDERS_TEMPLATE["cliente_resumo"])),
+    )
+
+    return subs
+
+
 def gerar_docx(dados: dict[str, Any], template: Path, saida: Path) -> None:
     total = calcular_total(dados)
-    termo = dados.get("termo", {})
     total_fmt = formatar_pf(total)
 
     saida.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(template, saida)
     doc = Document(str(saida))
 
-    substituicoes = {
-        "1.047,00": total_fmt,
-        "contagem-sigvisa-desenvolvimento.xlsx": termo.get("planilha_anexa", "contagem-desenvolvimento.xlsx"),
-        "05 de maio de 2026": termo.get("data", "").replace("Salvador-BA, ", ""),
-        "001/2023": termo.get("processo_licitatorio", "001/2023"),
-        "255/2023": termo.get("contrato", "255/2023"),
-        "77751/2023": termo.get("processo_administrativo", "77751/2023"),
-    }
-    substituir_texto_documento(doc, substituicoes)
+    substituir_texto_documento(doc, montar_substituicoes(dados, total_fmt))
 
     if len(doc.tables) >= 2:
         reconstruir_tabela_pacotes(doc.tables[1], dados.get("grupos", []), total)

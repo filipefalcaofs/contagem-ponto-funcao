@@ -1,43 +1,44 @@
 {
   "identificacao": {
     "empresa": "Sudoeste Informática",
-    "aplicacao": "SIGVISA - Sistema de Gestão da Vigilância Sanitária",
-    "projeto": "Contagem IFPUG SIGVISA - Projeto de Desenvolvimento",
-    "dv_numero": "SIGVISA",
-    "responsavel": "Filipe Falcão",
+    "aplicacao": "Nome da Aplicação",
+    "projeto": "Contagem IFPUG - Projeto de Desenvolvimento",
+    "dv_numero": "DV-001",
+    "responsavel": "Responsável Técnico",
     "versao": "1.0",
     "tipo_contagem": "desenvolvimento",
     "rs_por_pf": 700,
-    "proposito": "Medir o tamanho funcional do SIGVISA como projeto de desenvolvimento, seguindo o Manual de Práticas de Contagem IFPUG 4.3.1."
+    "proposito": "Medir o tamanho funcional da aplicação como projeto de desenvolvimento, seguindo o Manual de Práticas de Contagem IFPUG 4.3.1."
   },
   "termo": {
-    "sistema": "SIGVISA – SISTEMA DE LICENCIAMENTO SANITÁRIO",
-    "total_pf": 1047,
-    "data": "Salvador-BA, 05 de maio de 2026",
-    "cliente": "SMS – SECRETARIA MUNICIPAL DA SAÚDE",
-    "cliente_linha2": "PMS – PREFEITURA MUNICIPAL DO SALVADOR – ESTADO DA BAHIA",
-    "processo_licitatorio": "001/2023",
-    "contrato": "255/2023",
-    "processo_administrativo": "77751/2023",
-    "planilha_anexa": "contagem-sigvisa-desenvolvimento.xlsx",
-    "elaborado_por": "CLEILSON SANTANA GOMES",
-    "elaborado_cargo": "CTO – CHIEF TECHNOLOGY OFFICER"
+    "sistema": "NOME DO SISTEMA – DESCRIÇÃO COMPLETA",
+    "nome_curto": "NOME DO SISTEMA",
+    "total_pf": 0,
+    "data": "Cidade-UF, dd de mês de aaaa",
+    "cliente": "NOME DO CLIENTE – LINHA 1",
+    "cliente_linha2": "NOME DO CLIENTE – LINHA 2",
+    "processo_licitatorio": "000/0000",
+    "contrato": "000/0000",
+    "processo_administrativo": "000/0000",
+    "planilha_anexa": "contagem-desenvolvimento.xlsx",
+    "elaborado_por": "NOME DO ELABORADOR",
+    "elaborado_cargo": "Cargo do elaborador"
   },
   "grupos": [
     {
       "id": "F1",
-      "nome": "Retaguarda - Autenticação Interna e Perfil",
+      "nome": "Módulo - Autenticação e Perfil",
       "itens": [
         {
-          "nome": "Autenticação VISA - autenticar usuário",
+          "nome": "Autenticação - autenticar usuário",
           "tipo": "EE",
           "td": 4,
           "ar": 1,
           "pf_local": 4,
-          "observacoes": "Entrada Externa. Processo elementar de login do analista VISA."
+          "observacoes": "Entrada Externa. Processo elementar de login."
         },
         {
-          "nome": "Perfil - consultar dados do usuário/cidadão",
+          "nome": "Perfil - consultar dados do usuário",
           "tipo": "CE",
           "td": 8,
           "ar": 1,
@@ -49,52 +50,33 @@
   ],
   "proposta": {
     "titulo": "PROPOSTA COMERCIAL",
-    "sistema": "SALUS — Sistema de Licenciamento Sanitário",
-    "subtitulo": "DVIS/SMS — Prefeitura Municipal de Salvador",
-    "data": "09/04/2026",
-    "objeto": "Desenvolvimento e implantação do SALUS — Sistema de Licenciamento Sanitário, compreendendo o Painel VISA e o Portal de Licenciamento Sanitário.",
-    "prazo": "40 (quarenta) dias corridos, contados a partir da assinatura do contrato e emissão da ordem de serviço."
+    "sistema": "Nome do Sistema — Descrição Comercial",
+    "subtitulo": "Cliente — Órgão contratante",
+    "data": "dd/mm/aaaa",
+    "objeto": "Desenvolvimento e implantação do sistema, compreendendo os módulos acordados no escopo funcional.",
+    "prazo": "Prazo acordado em contrato, contado a partir da assinatura e ordem de serviço."
   },
   "escopo_macro": [
     {
       "titulo": "1. Autenticação, Controle de Acesso e Perfil",
       "referencia": "HU.01 a HU.04",
       "itens": [
-        "Tela de login do Painel VISA (autenticação por e-mail e senha)",
-        "Tela de login do Portal (autenticação por CPF e senha)",
-        "Recuperação e redefinição de senha com e-mail transacional"
+        "Tela de login com autenticação por credenciais",
+        "Recuperação e redefinição de senha",
+        "Cadastro e gestão de usuários e perfis de acesso"
       ]
     }
   ],
   "resumo_pf": {
-    "ee": 329,
-    "se": 123,
-    "ce": 195,
-    "ali": 306,
-    "aie": 46,
-    "total_nao_ajustado": 999,
-    "vaf": 1.07,
-    "total_ajustado": 1069
+    "ee": 0,
+    "se": 0,
+    "ce": 0,
+    "ali": 0,
+    "aie": 0,
+    "total_nao_ajustado": 0,
+    "vaf": 1.0,
+    "total_ajustado": 0
   },
   "metodologia_contagem": "A contagem foi realizada conforme o CPM IFPUG 4.3.1, utilizando EE, SE, CE, ALI e AIE.",
-  "secoes_adicionais": [
-    {
-      "titulo": "6. Linguagem, Tecnologia e Frameworks",
-      "texto": "PHP 8.4+, Laravel 13, Vue 3, TypeScript, Inertia.js 2, PostgreSQL 16, Pest e Playwright."
-    },
-    {
-      "titulo": "7. Inteligência Artificial e Manutenção",
-      "itens": [
-        "Provedores configuráveis: OpenAI, Anthropic, Google Gemini, Groq, Azure, Together, Ollama.",
-        "Fora do orçamento: consumo de API Keys e custos de operação da IA."
-      ]
-    },
-    {
-      "titulo": "8. Carga Inicial do Banco de Dados",
-      "itens": [
-        "Dados de referência: distritos, bairros, CNAEs, requisitos, emolumentos e TVS.",
-        "Dados operacionais legados: estabelecimentos, DAMs pendentes, alvarás e RTs."
-      ]
-    }
-  ]
+  "secoes_adicionais": []
 }

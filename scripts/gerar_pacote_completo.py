@@ -33,7 +33,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Gera entregáveis completos de contagem APF")
     parser.add_argument("json", type=Path)
     parser.add_argument("-d", "--dir", type=Path, required=True, help="Diretório de saída")
-    parser.add_argument("--prefixo", default="sigvisa", help="Prefixo dos arquivos gerados")
+    parser.add_argument("--prefixo", default="contagem", help="Prefixo dos arquivos gerados")
     args = parser.parse_args()
 
     base = Path(__file__).resolve().parent.parent
