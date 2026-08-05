@@ -1,12 +1,19 @@
 # Skill: Contagem de Ponto de Função (IFPUG CPM 4.3.1)
 
-Skill autocontida para **contagem IFPUG CPM 4.3.1** e geração dos entregáveis comerciais:
+Skill autocontida para **contar** um sistema pelo IFPUG CPM 4.3.1 e **gerar** os entregáveis comerciais.
 
-- Planilha de contagem (XLSX)
-- Termo de Entrega e Aceite (DOCX + PDF)
-- Proposta Comercial (PDF)
+## O que a skill faz
 
-Funciona em **qualquer projeto**. Basta instalar a skill e apontar os scripts para o JSON de contagem do cliente.
+1. **Analisa** o projeto (requisitos, HUs, telas, fluxos, código como apoio)
+2. **Produz** o JSON de contagem (`contagem-*.json`) com grupos, ALI/AIE, EE/CE/SE, TDs, complexidades e PF
+3. **Gera** a partir desse JSON:
+   - Planilha de contagem (XLSX)
+   - Termo de Entrega e Aceite (DOCX + PDF)
+   - Proposta Comercial (PDF)
+
+O JSON é o **artefato intermediário** da contagem (fonte de verdade editável/auditável). Os scripts **não** inventam a contagem sozinhos — o agente (ou o analista) monta o JSON seguindo o CPM; depois os scripts materializam planilha/termo/proposta.
+
+Funciona em **qualquer projeto**.
 
 > Histórias de Usuário (HU) ficam na skill irmã:  
 > [filipefalcaofs/historias-usuario](https://github.com/filipefalcaofs/historias-usuario)
@@ -29,7 +36,27 @@ python3 ~/.cursor/skills/contagem-ponto-funcao/scripts/cli.py info
 
 O PDF completo (~2,7 MB) está em `referencias/CPM-IFPUG-4.3.1-PT.pdf`. Se o clone não trouxer o arquivo, baixe o manual IFPUG CPM 4.3.1 em português e coloque nesse caminho.
 
-## Uso rápido
+## Fluxo completo
+
+```text
+Projeto (requisitos/HUs/telas)
+        ↓  agente segue SKILL.md (CPM 4.3.1)
+contagem-projeto.json          ← gera / atualiza este arquivo
+        ↓  scripts
+planilha.xlsx + termo + proposta
+```
+
+Schema de referência: [`templates/contagem-exemplo.json`](templates/contagem-exemplo.json)
+
+## Uso com agente (Cursor)
+
+Com a skill instalada, peça:
+
+> Conte os pontos de função deste projeto: monte o JSON IFPUG e gere planilha, termo e proposta.
+
+O agente deve seguir [`SKILL.md`](SKILL.md): tipo de contagem → fronteira → dados → transações → JSON → XLSX/termo/proposta.
+
+## Scripts (a partir do JSON já montado)
 
 ```bash
 SKILL=~/.cursor/skills/contagem-ponto-funcao
@@ -43,15 +70,7 @@ python3 $SKILL/scripts/gerar_termo_aceite.py contagem.json -o termo.docx --pdf t
 python3 $SKILL/scripts/gerar_proposta_comercial.py contagem.json -o proposta.pdf
 ```
 
-JSON de exemplo: [`templates/contagem-exemplo.json`](templates/contagem-exemplo.json)
-
-## Uso com agente (Cursor)
-
-Com a skill instalada em `~/.cursor/skills/contagem-ponto-funcao`, peça:
-
-> Conte os pontos de função deste projeto e gere planilha, termo e proposta no padrão IFPUG.
-
-O agente deve seguir o fluxo de [`SKILL.md`](SKILL.md) (fronteira, ALI/AIE, EE/CE/SE, planilha, termo, proposta).
+Há também o caminho inverso (planilha editada → JSON): `scripts/extrair_planilha_para_json.py`.
 
 ## Histórias de Usuário
 
