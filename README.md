@@ -1,123 +1,97 @@
-# Contagem de Ponto de Função + Histórias de Usuário
+# Skill: Contagem de Ponto de Função (IFPUG CPM 4.3.1)
 
-Skill autosuficiente para **contagem IFPUG CPM 4.3.1**, geração de **planilha**, **termo de aceite**, **proposta comercial** e **histórias de usuário (HU)** em qualquer projeto.
+Skill autocontida para **contagem IFPUG CPM 4.3.1** e geração dos entregáveis comerciais:
 
-## Instalação
+- Planilha de contagem (XLSX)
+- Termo de Entrega e Aceite (DOCX + PDF)
+- Proposta Comercial (PDF)
+
+Funciona em **qualquer projeto**. Basta instalar a skill e apontar os scripts para o JSON de contagem do cliente.
+
+> Histórias de Usuário (HU) ficam na skill irmã:  
+> [filipefalcaofs/historias-usuario](https://github.com/filipefalcaofs/historias-usuario)
+
+## Instalação (Cursor)
 
 ```bash
-git clone https://github.com/filipefalcaofs/contagem-ponto-funcao.git
-cd contagem-ponto-funcao
-pip install -r requirements.txt
+git clone https://github.com/filipefalcaofs/contagem-ponto-funcao.git ~/.cursor/skills/contagem-ponto-funcao
+pip install -r ~/.cursor/skills/contagem-ponto-funcao/requirements.txt
 playwright install chromium
+```
+
+Confirme:
+
+```bash
+python3 ~/.cursor/skills/contagem-ponto-funcao/scripts/cli.py info
 ```
 
 ### Manual IFPUG (CPM 4.3.1 PT-BR)
 
-O PDF completo (~2,7 MB) está em `referencias/CPM-IFPUG-4.3.1-PT.pdf`. Se clonar sem LFS, baixe o manual IFPUG CPM 4.3.1 em português e coloque nesse caminho.
+O PDF completo (~2,7 MB) está em `referencias/CPM-IFPUG-4.3.1-PT.pdf`. Se o clone não trouxer o arquivo, baixe o manual IFPUG CPM 4.3.1 em português e coloque nesse caminho.
 
-## Uso no Cursor
-
-```bash
-git clone https://github.com/filipefalcaofs/contagem-ponto-funcao.git ~/.cursor/skills/contagem-ponto-funcao
-```
-
-Ou adicione como submódulo em projetos que usam a skill.
-
-## Histórias de Usuário (qualquer projeto)
-
-### 1. Inicializar estrutura no projeto cliente
+## Uso rápido
 
 ```bash
-cd /caminho/do/seu-projeto
-python /caminho/contagem-ponto-funcao/scripts/init_hus.py \
-  --nome "Meu Sistema — Descrição completa" \
-  --empresa "Minha Empresa"
+SKILL=~/.cursor/skills/contagem-ponto-funcao
+
+# Pacote completo (planilha + termo + proposta)
+python3 $SKILL/scripts/cli.py pacote contagem.json -d ./saida --prefixo projeto
+
+# Ou scripts individuais
+python3 $SKILL/scripts/preencher_planilha.py contagem.json -o contagem.xlsx
+python3 $SKILL/scripts/gerar_termo_aceite.py contagem.json -o termo.docx --pdf termo.pdf
+python3 $SKILL/scripts/gerar_proposta_comercial.py contagem.json -o proposta.pdf
 ```
 
-Cria:
+JSON de exemplo: [`templates/contagem-exemplo.json`](templates/contagem-exemplo.json)
 
-- `hu-projeto.json` — configuração do projeto
-- `docs/requisitos/hus/` — pasta das HUs (Markdown = fonte de verdade)
-- `docs/requisitos/hus/HU.01 - Exemplo.md` — modelo
-- `docs/requisitos/hus/MATRIZ-COBERTURA-HUS.md`
+## Uso com agente (Cursor)
 
-### 2. Editar HUs em Markdown
+Com a skill instalada em `~/.cursor/skills/contagem-ponto-funcao`, peça:
 
-Padrão de arquivo: `HU.NN - Título descritivo.md`
+> Conte os pontos de função deste projeto e gere planilha, termo e proposta no padrão IFPUG.
 
-Consulte `templates/hu-modelo.md` e `entregaveis/historias-usuario.md`.
+O agente deve seguir o fluxo de [`SKILL.md`](SKILL.md) (fronteira, ALI/AIE, EE/CE/SE, planilha, termo, proposta).
 
-### 3. Gerar DOCX / PDF
+## Histórias de Usuário
 
-Uma HU:
+Para HU no padrão Sudoeste (capa, logo, faixa, PDF):
 
 ```bash
-python scripts/gerar_hu_docx.py docs/requisitos/hus/HU.01\ -\ Exemplo.md \
-  --projeto . \
-  --pdf docs/requisitos/hus/HU.01\ -\ Exemplo.pdf
+git clone https://github.com/filipefalcaofs/historias-usuario.git ~/.cursor/skills/historias-usuario
+pip install -r ~/.cursor/skills/historias-usuario/requirements.txt
+
+python3 ~/.cursor/skills/historias-usuario/scripts/cli.py init \
+  --projeto /caminho/do/projeto --nome "Sistema X" --sem-exemplo
+python3 ~/.cursor/skills/historias-usuario/scripts/cli.py atualizar \
+  --projeto /caminho/do/projeto --pdf --consolidado
 ```
 
-Todas as HUs:
-
-```bash
-python scripts/atualizar_hus.py --projeto /caminho/do/projeto --pdf --consolidado
-```
-
-Consolidado:
-
-```bash
-python scripts/gerar_hu_consolidado.py --projeto /caminho/do/projeto
-```
-
-### Configuração (`hu-projeto.json`)
-
-```json
-{
-  "nome_projeto": "Meu Sistema — Descrição",
-  "empresa": "Sudoeste Informática",
-  "pasta_hus": "docs/requisitos/hus",
-  "cor_primaria": "#005ca9",
-  "gerar_docx": true,
-  "gerar_pdf": false,
-  "gerar_consolidado": true
-}
-```
-
-## Contagem de PF + entregáveis comerciais
-
-```bash
-python scripts/preencher_planilha.py contagem.json -o contagem.xlsx
-python scripts/gerar_termo_aceite.py contagem.json -o termo.docx --pdf termo.pdf
-python scripts/gerar_proposta_comercial.py contagem.json -o proposta.pdf
-python scripts/gerar_pacote_completo.py contagem.json -d ./saida --prefixo projeto
-```
-
-Documentação detalhada: [SKILL.md](SKILL.md)
+Os scripts `*_hu*` desta skill permanecem só por compatibilidade; preferir `historias-usuario`.
 
 ## Estrutura do repositório
 
 ```
-├── SKILL.md                 # Instruções para agentes IA
+contagem-ponto-funcao/
+├── SKILL.md                 # Instruções para agentes
 ├── README.md
 ├── requirements.txt
-├── templates/
-│   ├── hu-modelo.docx       # Layout Word
-│   ├── hu-modelo.md         # Layout Markdown
-│   ├── hu-projeto.exemplo.json
-│   ├── planilha-contagem-modelo.xlsx
-│   └── html/                # Templates PDF
 ├── scripts/
-│   ├── hu_parser.py
-│   ├── hu_docx_builder.py
-│   ├── gerar_hu_docx.py
-│   ├── atualizar_hus.py
-│   ├── gerar_hu_consolidado.py
-│   ├── init_hus.py
-│   └── ...                  # Planilha, termo, proposta
-├── referencias/             # Extratos CPM IFPUG
+│   ├── cli.py               # entrada única
+│   ├── preencher_planilha.py
+│   ├── gerar_termo_aceite.py
+│   ├── gerar_proposta_comercial.py
+│   ├── gerar_pacote_completo.py
+│   └── ...
+├── templates/               # Planilha, termo, proposta, JSON exemplo
+├── referencias/             # Extratos CPM + PDF IFPUG
 └── entregaveis/             # Guias por tipo de documento
 ```
 
+## Dependências
+
+Ver [`requirements.txt`](requirements.txt). Sistema: Python 3.9+, Playwright (Chromium) para PDFs institucionais.
+
 ## Licença
 
-MIT — templates de documento: adapte textos institucionais ao seu cliente.
+MIT — adapte textos institucionais e identidade visual ao seu cliente.

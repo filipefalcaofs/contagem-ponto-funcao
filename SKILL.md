@@ -1,6 +1,12 @@
 ---
 name: contagem-ponto-funcao
-description: Use when the user asks for contagem de ponto de função, APF, IFPUG, análise de pontos de função, preencher planilha de contagem, gerar termo de entrega e aceite, proposta comercial, histórias de usuário HU, docs/requisitos/hus, estimar tamanho funcional, revisar TD/AR/TR, ALI/AIE/EE/CE/SE, DER/RLR/FTR, VAF/GSC, melhoria/enhancement, ou validar contagem para contrato/fiscal. Segue o CPM IFPUG 4.3.1 PT-BR integral e gera planilha, termo e proposta.
+description: >-
+  Contagem IFPUG CPM 4.3.1 e entregáveis comerciais (planilha XLSX, termo de
+  aceite, proposta). Use when the user asks for contagem de ponto de função,
+  APF, IFPUG, planilha de contagem, termo de entrega e aceite, proposta
+  comercial, estimar tamanho funcional, TD/AR/TR, ALI/AIE/EE/CE/SE, DER/RLR/FTR,
+  VAF/GSC, melhoria/enhancement ou validar contagem. Para Histórias de Usuário
+  (HU), preferir a skill historias-usuario.
 ---
 
 # Contagem de Ponto de Função — IFPUG CPM 4.3.1
@@ -230,6 +236,9 @@ Se não for possível auditar, marque pendência. Não apresente como contagem d
 - Linhas de grupo = título, sem tipo, TD, AR/TR ou PF.
 - Pontuação apenas nos itens abaixo do grupo.
 - `Observações` em linguagem funcional com citação CPM quando relevante.
+- **Organização obrigatória:** cada ALI/AIE deve ficar dentro do seu grupo funcional correspondente, antes das transações EE/CE/SE relacionadas. Não criar um grupo final genérico com todos os ALIs/AIEs juntos, salvo quando o próprio escopo funcional for exclusivamente "Dados compartilhados" e isso estiver justificado.
+- Exemplo de ordem por grupo: `Dados - Publicações` (ALI), `Dados externos - Provedor de IA` (AIE, se aplicável), depois `Publicações - incluir`, `Publicações - alterar`, `Publicações - consultar`, etc.
+- **CRUD funcional separado:** quando o usuário possui ações de negócio distintas para Create, Read, Update e Delete de um mesmo objeto, conte e liste os quatro processos elementares separados: `incluir`, `consultar` (ou listar/detalhar), `alterar` e `excluir`. Não usar `manter` para agrupar CRUD na planilha. Use `alterar parâmetros...` apenas para configurações sem criação/exclusão funcional de registro.
 
 ## Entregáveis comerciais (pacote completo)
 
@@ -279,12 +288,15 @@ Dependências: ver [requirements.txt](requirements.txt). Após instalar, executa
 
 ### Histórias de Usuário (qualquer projeto)
 
-1. **Inicializar** — `python scripts/init_hus.py --nome "Projeto X" --projeto /caminho/cliente`
-2. **Configurar** — `hu-projeto.json` na raiz do projeto cliente (ver [templates/hu-projeto.exemplo.json](templates/hu-projeto.exemplo.json))
-3. **Editar** — arquivos `HU.NN - Título.md` na pasta configurada (Markdown = fonte de verdade)
-4. **Gerar** — `python scripts/atualizar_hus.py --projeto /caminho/cliente --pdf --consolidado`
+**Skill canônica:** [historias-usuario](https://github.com/filipefalcaofs/historias-usuario)
 
-Guia: [entregaveis/historias-usuario.md](entregaveis/historias-usuario.md) | Template MD: [templates/hu-modelo.md](templates/hu-modelo.md) | Template DOCX: [templates/hu-modelo.docx](templates/hu-modelo.docx)
+```bash
+git clone https://github.com/filipefalcaofs/historias-usuario.git ~/.cursor/skills/historias-usuario
+python ~/.cursor/skills/historias-usuario/scripts/cli.py init --projeto /caminho/cliente --nome "Sistema X" --sem-exemplo
+python ~/.cursor/skills/historias-usuario/scripts/cli.py atualizar --projeto /caminho/cliente --pdf --consolidado
+```
+
+Scripts `*_hu*` desta skill existem só por compatibilidade — não usar para pacotes novos.
 
 ## Exemplo de configuração
 

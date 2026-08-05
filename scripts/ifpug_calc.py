@@ -17,17 +17,21 @@ def complexidade(tipo: str, td: int | float | None, ar: int | float | None) -> s
             return "H" if td >= 51 else ("L" if td <= 19 else "A")
         return "L" if td <= 50 else "A"
 
-    if tipo in ("EE", "CE", "SE"):
-        if ar >= 4:
-            limite_alta = 6 if tipo in ("CE", "SE") else 5
-            return "H" if td >= limite_alta else "A"
-        if ar >= 2:
-            if tipo in ("CE", "SE"):
-                return "H" if td >= 20 else ("L" if td <= 5 else "A")
+    if tipo == "EE":
+        # Tabela 6 do CPM: faixas de ALR 0-1 / 2 / >2 (ou seja, >= 3)
+        if ar >= 3:
+            return "H" if td >= 5 else "A"
+        if ar == 2:
             return "H" if td >= 16 else ("L" if td <= 4 else "A")
-        if tipo in ("CE", "SE"):
-            return "L" if td <= 19 else "A"
         return "L" if td <= 15 else "A"
+
+    if tipo in ("CE", "SE"):
+        # Tabela 7 do CPM: faixas de ALR 0-1 / 2-3 / >3 (ou seja, >= 4)
+        if ar >= 4:
+            return "H" if td >= 6 else "A"
+        if ar >= 2:
+            return "H" if td >= 20 else ("L" if td <= 5 else "A")
+        return "L" if td <= 19 else "A"
 
     return "L"
 
